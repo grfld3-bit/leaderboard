@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Leaderboard participant from Telegram",
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "number",
+          "description": "Telegram user ID"
+        },
+        "username": {
+          "type": "string",
+          "description": "Telegram username or first name"
+        },
+        "photo_url": {
+          "type": "string",
+          "description": "Telegram profile photo URL"
+        },
+        "score": {
+          "type": "number",
+          "description": "Current user score"
+        },
+        "previous_rank": {
+          "type": "number",
+          "description": "User rank from the previous 24h period"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last time the user score was updated"
+        }
+      },
+      "required": ["user_id", "username", "score"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "schema": "User",
+      "description": "Collection of all leaderboard participants"
+    }
+  }
+}

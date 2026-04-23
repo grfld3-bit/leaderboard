@@ -16,16 +16,16 @@ async function startServer() {
   app.get("/api/leaderboard", (req, res) => {
     // Mock data for the leaderboard as requested
     const leaderboardData = [
-      { user_id: 8447684216, score: 150000, username: "Courtney Henry" },
-      { user_id: 123456789, score: 120000, username: "Watson Bane" },
-      { user_id: 987654321, score: 115000, username: "Leslie Alexander" },
-      { user_id: 456789123, score: 110000, username: "Eleanor Pena" },
-      { user_id: 321654987, score: 105000, username: "Arlene McCoy" },
-      { user_id: 159357258, score: 100000, username: "Albert Flores" },
-      { user_id: 753159852, score: 95000, username: "Bessie Cooper" },
-      { user_id: 258456123, score: 90000, username: "Arlene McCoy" },
-      { user_id: 951753456, score: 85000, username: "Dianne Russell" },
-      { user_id: 357159258, score: 80000, username: "Ronald Richards" },
+      { user_id: 8447684216, score: 150000, username: "Courtney Henry", previous_rank: 2 },
+      { user_id: 123456789, score: 120000, username: "Watson Bane", previous_rank: 1 },
+      { user_id: 987654321, score: 115000, username: "Leslie Alexander", previous_rank: 3 },
+      { user_id: 456789123, score: 110000, username: "Eleanor Pena", previous_rank: 5 },
+      { user_id: 321654987, score: 105000, username: "Arlene McCoy", previous_rank: 4 },
+      { user_id: 159357258, score: 100000, username: "Albert Flores", previous_rank: 6 },
+      { user_id: 753159852, score: 95000, username: "Bessie Cooper", previous_rank: 10 },
+      { user_id: 258456123, score: 90000, username: "Arlene McCoy", previous_rank: 8 },
+      { user_id: 951753456, score: 85000, username: "Dianne Russell", previous_rank: 7 },
+      { user_id: 357159258, score: 80000, username: "Ronald Richards", previous_rank: 9 },
     ];
 
     res.json({

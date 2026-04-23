@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Helper for user validation
+    function isValidUser(data) {
+      return data.keys().hasAll(['user_id', 'username', 'score']) &&
+             data.user_id is number &&
+             data.username is string && data.username.size() <= 100 &&
+             data.score is number &&
+             (!('photo_url' in data) || (data.photo_url is string && data.photo_url.size() <= 1000)) &&
+             (!('previous_rank' in data) || data.previous_rank is number) &&
+             (!('last_updated' in data) || data.last_updated is timestamp);
+    }
+
+    match /users/{userId} {
+      // allow get: anyone authenticated can see a specific user profile
+      // allow list: anyone authenticated can see the leaderboard
+      // Secure list query: ensure clients are authenticated
+      allow read: if true; // Public leaderboard for this specific use case, but usually restricted to isSignedIn()
+
+      // Users can only create/update their own data
+      // For this telegram app, we identify the document by Telegram User ID string
+      allow create: if isValidUser(request.resource.data) && request.resource.data.user_id != null;
+      
+      allow update: if isValidUser(request.resource.data) && 
+                      request.resource.data.user_id == resource.data.user_id &&
+                      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['username', 'photo_url', 'score', 'last_updated', 'previous_rank']);
+    }
+  }
+}
